@@ -40,16 +40,21 @@ void printList(Node *head)
     cout << "NULL" << endl;
 }
 
-int countListElements(Node *node, int count)
+void reverseList(Node *&head)
 {
-    if (node)
+    Node *prev = NULL;
+    Node *curr = head;
+    Node *next;
+
+    while (curr)
     {  
-        count ++;
-        node = node->next;
-        count = countListElements(node, count);
+        next = curr->next;
+        curr->next = prev;
+        prev = curr;
+        curr = next;
     }
 
-    return count;
+    head = prev;
 }
 
 void insertNode(Node *&head, Node *newNode, int pos=0)
@@ -112,12 +117,46 @@ int main()
             insertNode(head, node, pos);
         }
     
-        printList(head);
+    }
+    cout << endl;
+    printList(head);
+    reverseList(head);
+    //printList(head);
+
+    Node *iter = head;
+
+    Node *head1 = NULL;
+
+    int c = 1;
+
+    while (iter)
+    {
+        int data = iter->data + c;
+
+        if (data > 9)
+        {
+            c = 1;
+            data = 0;
+        }
+        else
+            c = 0;
+
+        Node *node = new Node();
+        node->data = data;
+
+        insertNode(head1, node, 0);
+
+        iter = iter->next;
+    }
+
+    if (c == 1)
+    {
+        Node *node = new Node();
+        node->data = 1;
+        insertNode(head1, node, 0);
     }
     
-    int numElem = countListElements(head, 0);    
-    cout << "No of elements in the list = " << numElem << endl;
-    printList(head);
+    printList(head1);
 
     return 0;
 }
