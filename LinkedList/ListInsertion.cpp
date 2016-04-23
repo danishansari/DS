@@ -48,23 +48,30 @@ void insertNode(Node *&head, Node *newNode, int pos=0)
         head = newNode;
         newNode->next = NULL;
     }
+    else if (pos == 0)
+    {
+        newNode->next = head;
+        head = newNode;
+    }
     else
     {
         Node *iter = head;
-        for (int i = 0; (i < pos) && iter; i++)
+        for (int i = 1; (i < pos); i++)
         {
             if (!iter)
                 break;
-
+            
             iter = iter->next;
         }
 
-        newNode->next = iter;
-        iter = newNode;
+        if (iter)
+        {
+            newNode->next = iter->next;
+            iter->next = newNode;
+        }
+        else
+            cout << "error: index out of bound" << endl;
     }
-
-    if (pos == 0)
-        head = newNode;
 }
 
 int main()
@@ -72,15 +79,19 @@ int main()
     Node *head = NULL; 
  
     int data = 1;
+    int pos = 0;
 
     for (int i = 0; i < 5; i++)
     {
         Node *node = new Node();
         
-        cout << "Enter a no: ";
+        cout << "Enter a no and pos: ";
         cin >> data;
+        cin >> pos;
+
         node->data = data;
-        insertNode(head, node, 0);
+
+        insertNode(head, node, pos);
         printList(head);
     }
 
